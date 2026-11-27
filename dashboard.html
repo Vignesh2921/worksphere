@@ -5,7 +5,6 @@
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <!-- I made sidebar on left side -->
   <div class="sidebar">
     <h2>WorkSphere</h2>
     <p id="userEmail"></p>
@@ -13,26 +12,22 @@
     <a href="#">Employees</a>
     <a href="#">Attendance</a>
     <a href="#">Leave</a>
-    <!-- I added logout here, it will take me back to login -->
     <a href="#" onclick="logout()">Logout</a>
   </div>
 
-  <!-- I am showing all main content here -->
   <div class="main">
     <div class="topbar">
       <h1>Dashboard</h1>
       <p>Welcome back! Here is your overview.</p>
     </div>
 
-    <!-- I added 4 small cards for overview -->
     <div class="cards">
       <div class="card"><h3>Total Employees</h3><p id="totalEmp">0</p></div>
-      <div class="card"><h3>Present Today</h3><p>0</p></div>
+      <div class="card"><h3>Present Today</h3><p id="presentToday">0</p></div>
       <div class="card"><h3>On Leave</h3><p>0</p></div>
       <div class="card"><h3>Departments</h3><p id="totalDept">0</p></div>
     </div>
 
-    <!-- I added this form, HR will add employee from here -->
     <div class="table-box">
       <h3>Add Employee</h3>
       <div class="form-row">
@@ -49,12 +44,33 @@
       <p id="empMsg"></p>
     </div>
 
-    <!-- I am showing employees list here, it will update when I add -->
+    <!-- Attendance Box -->
+    <div class="table-box">
+      <h3>Mark Attendance - Today</h3>
+      <div class="form-row">
+        <!-- I am showing employee names here, HR will select one name -->
+        <select id="attEmp">
+          <option value="">Select Employee</option>
+        </select>
+        <select id="attStatus">
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+        <button onclick="markAttendance()">Mark Attendance</button>
+      </div>
+      <p id="attMsg"></p>
+      <h4>Today's Attendance</h4>
+      <table>
+        <thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="attTable"></tbody>
+      </table>
+      <p id="noAtt">No attendance marked yet for today.</p>
+    </div>
+
     <div class="table-box">
       <h3>Employees List</h3>
       <table>
         <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
-        <!-- I fixed here, I missed tbody before, now I added it, list will show here -->
         <tbody id="empTable"></tbody>
       </table>
       <p id="noEmp">No employees yet. Please add one.</p>
