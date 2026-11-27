@@ -1,38 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>WorkSphere - Login</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<head><title>WorkSphere - Login</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <!-- Main login card -->
-  <div class="login-box" id="loginBox">
+  <div class="login-box">
     <h1>WorkSphere</h1>
     <p>Employee Management System</p>
-
-    <!-- autocomplete off, so Chrome won't show Google account suggestions here -->
-    <input id="email" type="email" placeholder="Company Email (e.g. name@worksphere.com)" autocomplete="off">
-
-    <!-- Password field with eye icon -->
+    <input id="email" type="email" placeholder="Company Email">
     <div class="pass-wrap">
-      <input id="password" type="password" placeholder="Password" autocomplete="new-password">
+      <input id="password" type="password" placeholder="Password">
       <span onclick="togglePass()" class="eye">👁️</span>
     </div>
-
-    <p id="passHint">Password: 8+ chars, 1 Capital, 1 Number, 1 Special Char</p>
-
-    <button onclick="login()" id="loginBtn">Login</button>
-    <button onclick="signup()" class="outline">Sign Up</button>
-
-    <div class="divider">OR</div>
-
-    <button onclick="googleSignup()" class="google">Continue with Google</button>
-
-    <!-- All success / error messages will show here -->
+    <button onclick="login()">Login</button>
     <p id="msg"></p>
   </div>
-
-  <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

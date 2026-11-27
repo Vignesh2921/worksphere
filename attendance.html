@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head><title>WorkSphere - Attendance</title><link rel="stylesheet" href="dashboard.css"></head>
+<head>
+<title>WorkSphere - Attendance</title>
+<link rel="stylesheet" href="dashboard.css">
+</head>
 <body>
   <div class="sidebar">
-    <h2>WorkSphere</h2><p id="userEmail"></p>
+    <h2>WorkSphere</h2>
+    <p id="userEmail"></p>
+    <p id="userRole" style="font-size:12px; opacity:0.8;"></p>
     <a href="dashboard.html">Dashboard</a>
     <a href="employees.html">Employees</a>
     <a href="attendance.html" class="active">Attendance</a>
     <a href="leave.html">Leave</a>
+    <a href="salary.html">💰 Salary</a>
     <a href="#" onclick="logout()">Logout</a>
   </div>
+
   <div class="main">
-    <div class="topbar"><h1>Attendance</h1><p>HR marks attendance here. In next step Employee will mark his own.</p></div>
+    <div class="topbar">
+      <h1>Attendance</h1>
+      <p id="attSub">HR marks attendance here. Employee will mark his own.</p>
+    </div>
+
     <div class="table-box">
       <h3>Mark Attendance - Today</h3>
       <div class="form-row">
         <select id="attEmp"><option value="">Select Employee</option></select>
-        <select id="attStatus"><option value="Present">Present</option><option value="Absent">Absent</option></select>
+        <select id="attStatus">
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
         <button onclick="markAttendance()">Mark Attendance</button>
-      </div><p id="attMsg"></p>
+      </div>
+      <p id="attMsg"></p>
+
       <h4>Today's Attendance</h4>
-      <table><thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead><tbody id="attTable"></tbody></table>
+      <table>
+        <thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="attTable"></tbody>
+      </table>
       <p id="noAtt">No attendance marked yet.</p>
     </div>
   </div>
-  <script src="api.js"></script>
-  <script src="attendance.js"></script>
+
+<script type="module" src="attendance.js"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
     <a href="employees.html" class="active">Employees</a>
     <a href="attendance.html">Attendance</a>
     <a href="leave.html">Leave</a>
+    <a href="salary.html">💰 Salary</a>
     <a href="#" onclick="logout()">Logout</a>
   </div>
   <div class="main">
@@ -17,7 +18,9 @@
       <div class="form-row">
         <input type="text" id="empName" placeholder="Employee Name">
         <input type="email" id="empEmail" placeholder="Email">
+        <input type="text" id="empPass" placeholder="Password (default 12345)">
         <select id="empDept"><option value="IT">IT</option><option value="HR">HR</option><option value="Design">Design</option><option value="Sales">Sales</option></select>
+        <input type="number" id="empSalary" placeholder="Basic Salary" value="30000">
         <button onclick="addEmployee()">Add Employee</button>
       </div><p id="empMsg"></p>
     </div>
@@ -28,11 +31,10 @@
         <select id="filterDept" onchange="showEmployees()"><option value="All">All Departments</option><option value="IT">IT</option><option value="HR">HR</option><option value="Design">Design</option><option value="Sales">Sales</option></select>
         <button onclick="clearFilter()" class="btn-clear">Clear</button>
       </div>
-      <table><thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th><th>Action</th></tr></thead><tbody id="empTable"></tbody></table>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Salary</th><th>Action</th></tr></thead><tbody id="empTable"></tbody></table>
       <p id="noEmp">No employees yet.</p><p id="noSearch" style="display:none;color:#888;font-size:13px;">No employee found.</p>
     </div>
   </div>
-  <script src="api.js"></script>
-  <script src="employees.js"></script>
+<script type="module" src="employees.js"></script>
 </body>
 </html>

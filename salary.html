@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Salary - WorkSphere</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h2>💰 Salary Slips</h2>
+  <a href="dashboard.html">← Back to Dashboard</a>
+  <button onclick="logout()" style="float:right">Logout</button>
+
+  <!-- HR FORM -->
+  <div id="hrForm" style="margin-top:20px; background:#f9f9f9; padding:20px; border-radius:10px;">
+    <h3>Generate Salary Slip</h3>
+    <label>Employee</label>
+    <select id="empSelect"></select><br><br>
+    
+    <label>Month</label>
+    <input type="month" id="month"><br><br>
+
+    <label>Basic (Fixed)</label>
+    <input type="number" id="basic" readonly><br><br>
+
+    <label>HRA (40% of Basic)</label>
+    <input type="number" id="hra" readonly><br><br>
+
+    <label>Allowances</label>
+    <input type="number" id="allow" value="2000"><br><br>
+
+    <label>PF (12% of Basic)</label>
+    <input type="number" id="pf" readonly><br><br>
+
+    <label>Paid Leaves Taken (This Month)</label>
+    <input type="number" id="paidLeaves" value="0"><br><br>
+
+    <label>LOP Days (Unpaid Leaves)</label>
+    <input type="number" id="lopDays" value="0"><br><br>
+
+    <label>Other Deductions</label>
+    <input type="number" id="deduct" value="0"><br><br>
+
+    <h3 id="netPreview">Net Salary: ₹0</h3>
+    <button onclick="generateSlip()">Generate & Save Slip</button>
+  </div>
+
+  <h3 style="margin-top:30px;">My Slips</h3>
+  <table border="1" width="100%">
+    <thead>
+      <tr><th>Employee</th><th>Month</th><th>Basic</th><th>HRA</th><th>PF</th><th>LOP</th><th>Net</th><th>Action</th></tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+</div>
+
+<script type="module" src="salary.js"></script>
+</body>
+</html>

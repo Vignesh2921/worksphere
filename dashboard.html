@@ -3,11 +3,14 @@
 <head><title>WorkSphere - Dashboard</title><link rel="stylesheet" href="dashboard.css"></head>
 <body>
   <div class="sidebar">
-    <h2>WorkSphere</h2><p id="userEmail"></p>
+    <h2>WorkSphere</h2>
+    <p id="userEmail"></p>
+    <p id="userRole" style="font-size:12px; opacity:0.8;"></p>
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="employees.html">Employees</a>
     <a href="attendance.html">Attendance</a>
     <a href="leave.html">Leave</a>
+    <a href="salary.html">💰 Salary</a>
     <a href="#" onclick="logout()">Logout</a>
   </div>
   <div class="main">
@@ -17,30 +20,18 @@
       <div class="card"><h3>Present Today</h3><p id="presentToday">0</p></div>
       <div class="card"><h3>On Leave</h3><p id="onLeaveToday">0</p></div>
       <div class="card"><h3>Departments</h3><p id="totalDept">0</p></div>
+      <div class="card" onclick="location.href='salary.html'" style="cursor:pointer; background:#e8f5e9;"><h3>💰 Salary</h3><p>View Slips & PF →</p></div>
+      <div class="card" onclick="location.href='leave.html'" style="cursor:pointer; background:#fff3e0;"><h3>📝 Leaves</h3><p>Apply / Approve →</p></div>
     </div>
     <div class="table-box">
       <h3>Quick Info</h3>
-      <p>Use sidebar to go to Employees, Attendance, Leave pages.</p>
-      <p>HR can see all data. In next step Employee will see only his data.</p>
+      <p>Use sidebar to go to Employees, Attendance, Leave, Salary pages.</p>
+      <p>HR can see all data. Employee will see only his data.</p>
+      <h3 style="margin-top:20px;">Recent Employees</h3>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Dept</th><th>Basic Salary</th></tr></thead><tbody id="empTable"></tbody></table>
+      <p id="noEmp" style="display:none;">No Employees Found.</p>
     </div>
   </div>
-  <script src="api.js"></script>
-  <script>
-    // Dashboard only shows counts. Data comes from same localStorage Database.
-    // In Step 7, this same data will come from Backend API: GET /api/dashboard
-    let user = localStorage.getItem("worksphere_user");
-    if(!user) window.location.href="index.html";
-    else document.getElementById("userEmail").innerText=user;
-    function logout(){ localStorage.removeItem("worksphere_user"); window.location.href="index.html"; }
-    function getToday(){ return new Date().toISOString().split('T')[0]; }
-    let emps = JSON.parse(localStorage.getItem("worksphere_employees")||"[]");
-    document.getElementById("totalEmp").innerText=emps.length;
-    document.getElementById("totalDept").innerText=[...new Set(emps.map(e=>e.dept))].length;
-    let today=getToday();
-    let att=JSON.parse(localStorage.getItem("worksphere_attendance")||"[]").filter(a=>a.date===today);
-    document.getElementById("presentToday").innerText=att.filter(a=>a.status==="Present").length;
-    let leaves=JSON.parse(localStorage.getItem("worksphere_leaves")||"[]");
-    document.getElementById("onLeaveToday").innerText=leaves.filter(l=>l.status==="Approved" && l.from<=today && l.to>=today).length;
-  </script>
+<script type="module" src="dashboard.js"></script>
 </body>
 </html>
