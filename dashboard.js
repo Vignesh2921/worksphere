@@ -44,9 +44,18 @@ function showEmployees(){
   }
 
   noEmp.style.display = "none";
-  // I am creating rows for each employee
+  // I added edit and delete buttons for each employee, I am using email to find them
   table.innerHTML = list.map(e => `
-    <tr><td>${e.name}</td><td>${e.email}</td><td>${e.dept}</td><td>Active</td></tr>
+  <tr>
+    <td>${e.name}</td>
+    <td>${e.email}</td>
+    <td>${e.dept}</td>
+    <td>Active</td>
+    <td>
+      <button class="btn-edit" onclick="editEmployee('${e.email}')">Edit</button>
+      <button class="btn-del" onclick="deleteEmployee('${e.email}')">Delete</button>
+    </td>
+  </tr>
   `).join("");
 }
 
@@ -83,6 +92,41 @@ function addEmployee(){
   msg.style.color = "green";
   msg.innerText = "Employee Added Successfully!";
   setTimeout(()=>{ msg.innerText = ""; }, 2000);
+}
+
+// I am handling edit here - when HR clicks edit, I am putting data back into form
+function editEmployee(email){
+  let list = getEmployees();
+  let emp = list.find(e => e.email === email);
+  if(!emp) return;
+
+  // I am filling form with old data, so HR can change it
+  document.getElementById("empName").value = emp.name;
+  document.getElementById("empEmail").value = emp.email;
+  document.getElementById("empDept").value = emp.dept;
+
+  // I am deleting old one, because when HR clicks Add again, new one will save
+  // I am doing this trick so I don't need a separate update form
+  deleteEmployee(email, true);
+
+  document.getElementById("empMsg").style.color = "blue";
+  document.getElementById("empMsg").innerText = "Now edit and click Add Employee again to update!";
+}
+
+// I am handling delete here
+function deleteEmployee(email, isEdit = false){
+  let list = getEmployees();
+  // I am removing that one employee, others I am keeping
+  let newList = list.filter(e => e.email !== email);
+  saveEmployees(newList);
+  showEmployees();
+
+  if(!isEdit){
+    let msg = document.getElementById("empMsg");
+    msg.style.color = "red";
+    msg.innerText = "Employee Deleted!";
+    setTimeout(()=>{ msg.innerText = ""; }, 2000);
+  }
 }
 
 // I am showing list when page opens
