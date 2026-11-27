@@ -123,3 +123,18 @@ WorkSphere/
 6. Start Managing Employees from the Dashboard
 
 ---
+
+## 🔮 Future Scope
+
+- Employee Self Login Portal
+- Payslip Download as PDF
+- Leave Status Notification Inside Website
+- Mobile Responsive Design
+
+---
+
+## 👨‍💻 Author
+
+**Project:** WorkSphere - Employee Management System
+**Developed By:**  Bhatraju Naga Vignesh
+**Database:** Supabase PostgreSQL
