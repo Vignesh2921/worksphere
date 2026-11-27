@@ -1,0 +1,26 @@
+/* I am using flex to keep sidebar and main side by side */
+body{margin:0;font-family:Arial;background:#f4f6f9;display:flex}
+
+/* I made sidebar dark blue like login page */
+.sidebar{width:230px;background:#0f2a5c;color:white;height:100vh;padding:20px;box-sizing:border-box}
+.sidebar h2{margin:0}
+.sidebar p{font-size:12px;color:#cbd5e1;word-break:break-all}
+.sidebar a{display:block;color:white;text-decoration:none;padding:12px;border-radius:8px;margin-top:8px}
+.sidebar a.active, .sidebar a:hover{background:#1e3a7a}
+
+/* I am keeping main content on right side */
+.main{flex:1;padding:25px}
+.topbar h1{margin:0;color:#0f2a5c}
+.topbar p{color:#666;font-size:14px}
+
+/* I made 4 cards in one row */
+.cards{display:flex;gap:15px;margin-top:20px}
+.card{background:white;padding:20px;border-radius:12px;flex:1;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.card h3{margin:0;font-size:14px;color:#666}
+.card p{font-size:26px;font-weight:bold;margin:10px 0 0;color:#0f2a5c}
+
+/* I added table styling here */
+.table-box{background:white;padding:20px;border-radius:12px;margin-top:20px}
+.table-box table{width:100%;border-collapse:collapse;margin-top:10px}
+.table-box th, .table-box td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:14px}
+.table-box th{color:#666}
