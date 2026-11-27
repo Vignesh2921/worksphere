@@ -1,14 +1,13 @@
 // ============================================================
 // WORKSHPERE - DASHBOARD
 // 1. Login check + Logout
-// 2. Employee Add / Edit / Delete
+// 2. Employee Add / Edit / Delete + Search + Filter
 // 3. Attendance - HR marks Present / Absent
 // 4. Leave - HR applies, HR Approves / Rejects
 // All data saved in localStorage
 // ============================================================
 
 // ---------- LOGIN CHECK ----------
-// Only logged in HR can see Dashboard. If not logged in, go to login page.
 let loggedUser = localStorage.getItem("worksphere_user");
 if(!loggedUser){
   window.location.href = "index.html";
@@ -17,14 +16,12 @@ if(!loggedUser){
 }
 
 // ---------- LOGOUT ----------
-// Clear login and go to login page
 function logout(){
   localStorage.removeItem("worksphere_user");
   window.location.href = "index.html";
 }
 
 // ---------- EMPLOYEE GET / SAVE ----------
-// localStorage only saves text, so we use JSON.stringify to save, JSON.parse to get
 function getEmployees(){
   let data = localStorage.getItem("worksphere_employees");
   return data ? JSON.parse(data) : [];
@@ -33,39 +30,78 @@ function saveEmployees(list){
   localStorage.setItem("worksphere_employees", JSON.stringify(list));
 }
 
-// ---------- SHOW EMPLOYEES ----------
-// Show employees in table + update Total Employees + Departments cards
+// ---------- SHOW EMPLOYEES + SEARCH + FILTER ----------
+// LOGIC: We take full list, then filter it for DISPLAY only.
+// Original list in localStorage is not changed by search.
+// Steps:
+// 1. Get full list
+// 2. Read search text (lowercase, so "VIGNESH" and "vignesh" both match)
+// 3. Read department filter (All = show all)
+// 4. Filter: Name OR Email contains search text AND Dept matches filter
+// 5. Show filtered list in table. Total cards still show full count, not filtered count.
 function showEmployees(){
-  let list = getEmployees();
+  let fullList = getEmployees();
   let table = document.getElementById("empTable");
   let noEmp = document.getElementById("noEmp");
-  document.getElementById("totalEmp").innerText = list.length;
-  // Set removes duplicate departments. Ex: IT, IT, HR -> IT, HR = 2
-  let depts = [...new Set(list.map(e => e.dept))];
+  let noSearch = document.getElementById("noSearch");
+
+  // Cards always show FULL count, not filtered count, because cards are for total company
+  document.getElementById("totalEmp").innerText = fullList.length;
+  let depts = [...new Set(fullList.map(e => e.dept))];
   document.getElementById("totalDept").innerText = depts.length;
-  if(list.length === 0){
+
+  // Get search and filter values
+  let searchText = document.getElementById("searchEmp") ? document.getElementById("searchEmp").value.trim().toLowerCase() : "";
+  let filterDept = document.getElementById("filterDept") ? document.getElementById("filterDept").value : "All";
+
+  // Filter logic
+  let list = fullList.filter(e => {
+    let matchSearch = e.name.toLowerCase().includes(searchText) || e.email.toLowerCase().includes(searchText);
+    let matchDept = filterDept === "All" || e.dept === filterDept;
+    return matchSearch && matchDept;
+  });
+
+  // If no employees at all in company
+  if(fullList.length === 0){
     table.innerHTML = "";
     noEmp.style.display = "block";
-  } else {
-    noEmp.style.display = "none";
-    // Email is unique, so we use email to find employee for Edit/Delete
-    table.innerHTML = list.map(e => `
-    <tr>
-      <td>${e.name}</td>
-      <td>${e.email}</td>
-      <td>${e.dept}</td>
-      <td>Active</td>
-      <td>
-        <button class="btn-edit" onclick="editEmployee('${e.email}')">Edit</button>
-        <button class="btn-del" onclick="deleteEmployee('${e.email}')">Delete</button>
-      </td>
-    </tr>
-    `).join("");
+    if(noSearch) noSearch.style.display = "none";
+    return;
   }
+
+  // If employees exist but search found nothing
+  if(list.length === 0){
+    table.innerHTML = "";
+    noEmp.style.display = "none";
+    if(noSearch) noSearch.style.display = "block";
+    return;
+  }
+
+  // If found, show them
+  noEmp.style.display = "none";
+  if(noSearch) noSearch.style.display = "none";
+  table.innerHTML = list.map(e => `
+  <tr>
+    <td>${e.name}</td>
+    <td>${e.email}</td>
+    <td>${e.dept}</td>
+    <td>Active</td>
+    <td>
+      <button class="btn-edit" onclick="editEmployee('${e.email}')">Edit</button>
+      <button class="btn-del" onclick="deleteEmployee('${e.email}')">Delete</button>
+    </td>
+  </tr>
+  `).join("");
+}
+
+// Clear Search + Filter, show all again
+function clearFilter(){
+  document.getElementById("searchEmp").value = "";
+  document.getElementById("filterDept").value = "All";
+  showEmployees();
 }
 
 // ---------- ADD EMPLOYEE ----------
-// Steps: Check empty -> Check duplicate email -> Add -> Save -> Refresh -> Clear form
 function addEmployee(){
   let name = document.getElementById("empName").value.trim();
   let email = document.getElementById("empEmail").value.trim();
@@ -84,7 +120,6 @@ function addEmployee(){
   list.push({ name: name, email: email, dept: dept });
   saveEmployees(list);
   showEmployees();
-  // After adding, refresh both dropdowns so new name shows in Attendance + Leave
   loadAttDropdown();
   loadLeaveDropdown();
   document.getElementById("empName").value = "";
@@ -94,9 +129,7 @@ function addEmployee(){
   setTimeout(()=>{ msg.innerText = ""; }, 2000);
 }
 
-// ---------- EDIT EMPLOYEE ----------
-// LOGIC: Put old data in form, delete old record. When HR clicks Add again, new updated record saves.
-// This trick avoids separate Update form.
+// ---------- EDIT ----------
 function editEmployee(email){
   let list = getEmployees();
   let emp = list.find(e => e.email === email);
@@ -109,8 +142,7 @@ function editEmployee(email){
   document.getElementById("empMsg").innerText = "Now edit and click Add Employee again to update!";
 }
 
-// ---------- DELETE EMPLOYEE ----------
-// filter keeps all except deleted one. isEdit=true means delete is from Edit, so no message.
+// ---------- DELETE ----------
 function deleteEmployee(email, isEdit = false){
   let list = getEmployees();
   let newList = list.filter(e => e.email !== email);
@@ -127,7 +159,6 @@ function deleteEmployee(email, isEdit = false){
 }
 
 // ---------- ATTENDANCE ----------
-// getToday gives date like 2026-11-27, so we can filter today's attendance only
 function getToday(){
   return new Date().toISOString().split('T')[0];
 }
@@ -138,8 +169,6 @@ function getAttendance(){
 function saveAttendance(list){
   localStorage.setItem("worksphere_attendance", JSON.stringify(list));
 }
-
-// Fill Attendance dropdown with employee names. Value = email, Display = Name - Dept
 function loadAttDropdown(){
   let list = getEmployees();
   let select = document.getElementById("attEmp");
@@ -150,8 +179,6 @@ function loadAttDropdown(){
   }
   select.innerHTML = `<option value="">Select Employee</option>` + list.map(e => `<option value="${e.email}">${e.name} - ${e.dept}</option>`).join("");
 }
-
-// Mark Attendance: If already marked today, update it. If not, add new.
 function markAttendance(){
   let email = document.getElementById("attEmp").value;
   let status = document.getElementById("attStatus").value;
@@ -177,8 +204,6 @@ function markAttendance(){
   msg.innerText = "Attendance Marked!";
   setTimeout(()=>{ msg.innerText = ""; }, 2000);
 }
-
-// Show today's attendance only + update Present Today card
 function showAttendance(){
   let today = getToday();
   let attList = getAttendance().filter(a => a.date === today);
@@ -203,11 +228,7 @@ function showAttendance(){
 }
 
 // ---------- LEAVE ----------
-// LOGIC: Leave has 3 statuses: Pending -> Approved / Rejected
-// When HR applies leave, it starts as Pending. HR then clicks Approve / Reject.
-// On Leave card shows: How many Approved leaves include Today. Ex: If Vignesh leave is 27th to 28th and today is 27th, he is On Leave.
-// FUTURE: Employee will apply, HR will only Approve/Reject.
-
+// Leave Status: Pending -> Approved / Rejected. On Leave card = Approved leaves that include Today.
 function getLeaves(){
   let data = localStorage.getItem("worksphere_leaves");
   return data ? JSON.parse(data) : [];
@@ -215,8 +236,6 @@ function getLeaves(){
 function saveLeaves(list){
   localStorage.setItem("worksphere_leaves", JSON.stringify(list));
 }
-
-// Fill Leave dropdown with employee names, same as attendance
 function loadLeaveDropdown(){
   let list = getEmployees();
   let select = document.getElementById("leaveEmp");
@@ -227,8 +246,6 @@ function loadLeaveDropdown(){
   }
   select.innerHTML = `<option value="">Select Employee</option>` + list.map(e => `<option value="${e.email}">${e.name} - ${e.dept}</option>`).join("");
 }
-
-// Apply Leave: HR selects employee, type, dates, reason. New leave is Pending.
 function applyLeave(){
   let email = document.getElementById("leaveEmp").value;
   let type = document.getElementById("leaveType").value;
@@ -236,53 +253,40 @@ function applyLeave(){
   let to = document.getElementById("leaveTo").value;
   let reason = document.getElementById("leaveReason").value.trim();
   let msg = document.getElementById("leaveMsg");
-
   if(!email || !from || !to || !reason){
     msg.innerText = "Please fill all leave details";
     return;
   }
-  // To date should not be before From date
   if(to < from){
     msg.innerText = "To Date cannot be before From Date";
     return;
   }
-
   let list = getEmployees();
   let emp = list.find(e => e.email === email);
   if(!emp) return;
-
   let leaves = getLeaves();
-  // Each leave gets a unique id using Date.now(), so we can Approve/Reject that one leave only
   leaves.push({ id: Date.now(), name: emp.name, email: email, type: type, from: from, to: to, reason: reason, status: "Pending" });
   saveLeaves(leaves);
   showLeaves();
-
   document.getElementById("leaveReason").value = "";
   msg.style.color = "green";
   msg.innerText = "Leave Applied - Waiting for Approval!";
   setTimeout(()=>{ msg.innerText = ""; }, 2000);
 }
-
-// Show all leaves + update On Leave card
 function showLeaves(){
   let leaves = getLeaves();
   let table = document.getElementById("leaveTable");
   let noLeave = document.getElementById("noLeave");
   if(!table) return;
-
-  // On Leave count: Approved leaves where today is between From and To
   let today = getToday();
   let onLeaveCount = leaves.filter(l => l.status === "Approved" && l.from <= today && l.to >= today).length;
   document.getElementById("onLeaveToday").innerText = onLeaveCount;
-
   if(leaves.length === 0){
     table.innerHTML = "";
     if(noLeave) noLeave.style.display = "block";
     return;
   }
   if(noLeave) noLeave.style.display = "none";
-
-  // If status is Pending, show Approve + Reject buttons. If already decided, show no buttons.
   table.innerHTML = leaves.map(l => `
     <tr>
       <td>${l.name}</td>
@@ -297,8 +301,6 @@ function showLeaves(){
     </tr>
   `).join("");
 }
-
-// HR clicks Approve / Reject -> Update that leave's status using its id
 function updateLeave(id, newStatus){
   let leaves = getLeaves();
   let leave = leaves.find(l => l.id === id);
@@ -309,7 +311,6 @@ function updateLeave(id, newStatus){
 }
 
 // ---------- WHEN PAGE OPENS ----------
-// Load everything when page opens
 showEmployees();
 loadAttDropdown();
 showAttendance();

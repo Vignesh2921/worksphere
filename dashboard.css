@@ -1,4 +1,3 @@
-/* WORKSHPERE DASHBOARD STYLES - Left Sidebar + Right Main */
 body{margin:0;font-family:Arial;background:#f4f6f9;display:flex}
 .sidebar{width:230px;background:#0f2a5c;color:white;height:100vh;padding:20px;box-sizing:border-box}
 .sidebar h2{margin:0}
@@ -26,13 +25,12 @@ body{margin:0;font-family:Arial;background:#f4f6f9;display:flex}
 #noAtt{color:#888;font-size:13px}
 #leaveMsg{font-size:13px;color:red}
 #noLeave{color:#888;font-size:13px}
-/* Edit = Yellow, Delete = Red */
 .btn-edit{padding:5px 10px;background:#ffaa00;color:white;border:none;border-radius:6px;cursor:pointer;margin-right:5px}
 .btn-del{padding:5px 10px;background:#e63946;color:white;border:none;border-radius:6px;cursor:pointer}
-/* Approve = Green, Reject = Red */
 .btn-approve{padding:5px 10px;background:#28a745;color:white;border:none;border-radius:6px;cursor:pointer;margin-right:5px}
 .btn-reject{padding:5px 10px;background:#dc3545;color:white;border:none;border-radius:6px;cursor:pointer}
-/* Badges: Present/Approved = Green, Absent/Rejected = Red, Pending = Yellow */
+/* Clear button - Grey, so it looks different from Add button */
+.btn-clear{background:#6c757d !important}
 .badge-present{padding:4px 10px;background:#d4edda;color:#155724;border-radius:20px;font-size:12px;font-weight:bold}
 .badge-absent{padding:4px 10px;background:#f8d7da;color:#721c24;border-radius:20px;font-size:12px;font-weight:bold}
 .badge-pending{padding:4px 10px;background:#fff3cd;color:#856404;border-radius:20px;font-size:12px;font-weight:bold}
