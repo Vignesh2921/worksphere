@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>WorkSphere - Employees</title><link rel="stylesheet" href="dashboard.css"></head>
+<body>
+  <div class="sidebar">
+    <h2>WorkSphere</h2><p id="userEmail"></p>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="employees.html" class="active">Employees</a>
+    <a href="attendance.html">Attendance</a>
+    <a href="leave.html">Leave</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+  <div class="main">
+    <div class="topbar"><h1>Employees</h1><p>Add and manage employees here.</p></div>
+    <div class="table-box">
+      <h3>Add Employee</h3>
+      <div class="form-row">
+        <input type="text" id="empName" placeholder="Employee Name">
+        <input type="email" id="empEmail" placeholder="Email">
+        <select id="empDept"><option value="IT">IT</option><option value="HR">HR</option><option value="Design">Design</option><option value="Sales">Sales</option></select>
+        <button onclick="addEmployee()">Add Employee</button>
+      </div><p id="empMsg"></p>
+    </div>
+    <div class="table-box">
+      <h3>Employees List</h3>
+      <div class="form-row">
+        <input type="text" id="searchEmp" placeholder="Search by Name or Email..." onkeyup="showEmployees()">
+        <select id="filterDept" onchange="showEmployees()"><option value="All">All Departments</option><option value="IT">IT</option><option value="HR">HR</option><option value="Design">Design</option><option value="Sales">Sales</option></select>
+        <button onclick="clearFilter()" class="btn-clear">Clear</button>
+      </div>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th><th>Action</th></tr></thead><tbody id="empTable"></tbody></table>
+      <p id="noEmp">No employees yet.</p><p id="noSearch" style="display:none;color:#888;font-size:13px;">No employee found.</p>
+    </div>
+  </div>
+  <script src="api.js"></script>
+  <script src="employees.js"></script>
+</body>
+</html>
