@@ -24,3 +24,10 @@ body{margin:0;font-family:Arial;background:#f4f6f9;display:flex}
 .table-box table{width:100%;border-collapse:collapse;margin-top:10px}
 .table-box th, .table-box td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:14px}
 .table-box th{color:#666}
+/* I added form styling here, so inputs look clean */
+.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.form-row input, .form-row select{padding:10px;border:1px solid #ddd;border-radius:8px;flex:1;min-width:160px}
+.form-row button{padding:10px 18px;background:#0f2a5c;color:white;border:none;border-radius:8px;cursor:pointer}
+.form-row button:hover{background:#1e3a7a}
+#empMsg{font-size:13px;color:red}
+#noEmp{color:#888;font-size:13px}

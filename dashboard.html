@@ -26,21 +26,37 @@
 
     <!-- I added 4 small cards for overview -->
     <div class="cards">
-      <div class="card"><h3>Total Employees</h3><p>24</p></div>
-      <div class="card"><h3>Present Today</h3><p>21</p></div>
-      <div class="card"><h3>On Leave</h3><p>3</p></div>
-      <div class="card"><h3>Departments</h3><p>4</p></div>
+      <div class="card"><h3>Total Employees</h3><p id="totalEmp">0</p></div>
+      <div class="card"><h3>Present Today</h3><p>0</p></div>
+      <div class="card"><h3>On Leave</h3><p>0</p></div>
+      <div class="card"><h3>Departments</h3><p id="totalDept">0</p></div>
     </div>
 
-    <!-- I added a simple table, data is fake for now -->
+    <!-- I added this form, HR will add employee from here -->
     <div class="table-box">
-      <h3>Recent Employees</h3>
+      <h3>Add Employee</h3>
+      <div class="form-row">
+        <input type="text" id="empName" placeholder="Employee Name - Ex: Vignesh">
+        <input type="email" id="empEmail" placeholder="Email - Ex: vignesh@worksphere.com">
+        <select id="empDept">
+          <option value="IT">IT</option>
+          <option value="HR">HR</option>
+          <option value="Design">Design</option>
+          <option value="Sales">Sales</option>
+        </select>
+        <button onclick="addEmployee()">Add Employee</button>
+      </div>
+      <p id="empMsg"></p>
+    </div>
+
+    <!-- I am showing employees list here, it will update when I add -->
+    <div class="table-box">
+      <h3>Employees List</h3>
       <table>
-        <tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th></tr>
-        <tr><td>Vignesh</td><td>vignesh@worksphere.com</td><td>IT</td><td>Active</td></tr>
-        <tr><td>Rahul</td><td>rahul@worksphere.com</td><td>HR</td><td>Active</td></tr>
-        <tr><td>Priya</td><td>priya@worksphere.com</td><td>Design</td><td>On Leave</td></tr>
+        <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th></tr></thead>
+        <tbody id="empTable"></tbody>
       </table>
+      <p id="noEmp">No employees yet. Please add one.</p>
     </div>
   </div>
 
