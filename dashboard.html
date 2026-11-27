@@ -2,53 +2,43 @@
 <html>
 <head>
   <title>WorkSphere - Dashboard</title>
-  <!-- I am connecting CSS file here, so dashboard looks good -->
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <!-- ================= SIDEBAR START ================= -->
-  <!-- I made left side menu here. HR can see his email and all pages -->
+  <!-- ================= SIDEBAR ================= -->
   <div class="sidebar">
     <h2>WorkSphere</h2>
-    <!-- I am showing logged in HR email here using JS -->
+    <!-- Logged in HR email shows here -->
     <p id="userEmail"></p>
     <a href="#" class="active">Dashboard</a>
     <a href="#">Employees</a>
     <a href="#">Attendance</a>
     <a href="#">Leave</a>
-    <!-- I added logout here. When HR clicks, it will clear login and go to login page -->
+    <!-- Logout clears login and goes to login page -->
     <a href="#" onclick="logout()">Logout</a>
   </div>
-  <!-- ================= SIDEBAR END ================= -->
 
-  <!-- ================= MAIN CONTENT START ================= -->
-  <!-- I am showing all main content on right side -->
+  <!-- ================= MAIN ================= -->
   <div class="main">
     <div class="topbar">
       <h1>Dashboard</h1>
       <p>Welcome back! Here is your overview.</p>
     </div>
 
-    <!-- ================= 4 CARDS START ================= -->
-    <!-- I added 4 small cards for quick overview -->
-    <!-- Card 1 = Total Employees, Card 2 = Present Today, Card 3 = On Leave, Card 4 = Departments -->
+    <!-- 4 Cards for overview -->
     <div class="cards">
       <div class="card"><h3>Total Employees</h3><p id="totalEmp">0</p></div>
       <div class="card"><h3>Present Today</h3><p id="presentToday">0</p></div>
-      <div class="card"><h3>On Leave</h3><p>0</p></div>
+      <div class="card"><h3>On Leave</h3><p id="onLeaveToday">0</p></div>
       <div class="card"><h3>Departments</h3><p id="totalDept">0</p></div>
     </div>
-    <!-- ================= 4 CARDS END ================= -->
 
-    <!-- ================= ADD EMPLOYEE FORM START ================= -->
-    <!-- I added this form, HR will add new employee from here -->
-    <!-- HR will enter Name, Email, select Department, then click Add -->
+    <!-- ================= ADD EMPLOYEE ================= -->
     <div class="table-box">
       <h3>Add Employee</h3>
       <div class="form-row">
         <input type="text" id="empName" placeholder="Employee Name - Ex: Vignesh">
         <input type="email" id="empEmail" placeholder="Email - Ex: vignesh@worksphere.com">
-        <!-- I gave only 4 departments, so HR cannot type wrong department -->
         <select id="empDept">
           <option value="IT">IT</option>
           <option value="HR">HR</option>
@@ -57,61 +47,68 @@
         </select>
         <button onclick="addEmployee()">Add Employee</button>
       </div>
-      <!-- I am showing success / error message here, like "Employee Added" -->
       <p id="empMsg"></p>
     </div>
-    <!-- ================= ADD EMPLOYEE FORM END ================= -->
 
-    <!-- ================= ATTENDANCE START ================= -->
-    <!-- LOGIC: This is HR Admin Model. -->
-    <!-- In small company, HR will mark attendance for all employees. -->
-    <!-- In future, we will change to Employee Self Model, where employee will mark his own attendance. -->
-    <!-- For now, HR will select employee name and mark Present / Absent -->
+    <!-- ================= ATTENDANCE ================= -->
+    <!-- LOGIC: HR Admin Model - HR marks attendance for all -->
     <div class="table-box">
       <h3>Mark Attendance - Today</h3>
       <div class="form-row">
-        <!-- I am showing employee names here. This dropdown will fill automatically from Employees List -->
-        <!-- If no employee added, it will show "No Employee - First Add Employee" -->
-        <select id="attEmp">
-          <option value="">Select Employee</option>
-        </select>
-        <!-- HR will select Present if employee came, Absent if not came -->
+        <select id="attEmp"><option value="">Select Employee</option></select>
         <select id="attStatus">
           <option value="Present">Present</option>
           <option value="Absent">Absent</option>
         </select>
         <button onclick="markAttendance()">Mark Attendance</button>
       </div>
-      <!-- I am showing attendance message here -->
       <p id="attMsg"></p>
       <h4>Today's Attendance</h4>
       <table>
         <thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead>
-        <!-- I am showing today's attendance list here using JS -->
         <tbody id="attTable"></tbody>
       </table>
-      <!-- If no attendance marked today, I am showing this message -->
       <p id="noAtt">No attendance marked yet for today.</p>
     </div>
-    <!-- ================= ATTENDANCE END ================= -->
 
-    <!-- ================= EMPLOYEES LIST START ================= -->
-    <!-- I am showing all employees here in table. It will update when HR adds / edits / deletes -->
+    <!-- ================= LEAVE ================= -->
+    <!-- LOGIC: HR is applying leave for employee now. In future Employee will apply, HR will only Approve/Reject -->
+    <div class="table-box">
+      <h3>Apply Leave</h3>
+      <div class="form-row">
+        <!-- Employee name select, same as attendance -->
+        <select id="leaveEmp"><option value="">Select Employee</option></select>
+        <!-- Leave Type -->
+        <select id="leaveType">
+          <option value="Sick">Sick Leave</option>
+          <option value="Casual">Casual Leave</option>
+          <option value="Vacation">Vacation</option>
+        </select>
+        <input type="date" id="leaveFrom">
+        <input type="date" id="leaveTo">
+        <input type="text" id="leaveReason" placeholder="Reason - Ex: Fever">
+        <button onclick="applyLeave()">Apply Leave</button>
+      </div>
+      <p id="leaveMsg"></p>
+      <h4>Leave Requests</h4>
+      <table>
+        <thead><tr><th>Name</th><th>Type</th><th>From</th><th>To</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="leaveTable"></tbody>
+      </table>
+      <p id="noLeave">No leave requests yet.</p>
+    </div>
+
+    <!-- ================= EMPLOYEES LIST ================= -->
     <div class="table-box">
       <h3>Employees List</h3>
       <table>
         <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
-        <!-- I am filling this tbody using JS function showEmployees() -->
         <tbody id="empTable"></tbody>
       </table>
-      <!-- If no employees, I am showing this message -->
       <p id="noEmp">No employees yet. Please add one.</p>
     </div>
-    <!-- ================= EMPLOYEES LIST END ================= -->
   </div>
-  <!-- ================= MAIN CONTENT END ================= -->
 
-  <!-- I am connecting JS files here. api.js first, then dashboard.js -->
   <script src="api.js"></script>
   <script src="dashboard.js"></script>
 </body>
